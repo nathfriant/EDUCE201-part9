@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/night.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/zenburn.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+	<link rel="stylesheet" href="plugin/chalkboard/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Analyse des systèmes éducatifs
+
+#### Modélisation des réseaux sociaux et ségrégation scolaire
+
+<small>Nathanaël Friant
+
+2024-2025 </small>
+
+<aside class="notes"><p>Cette présentation s&#39;inscrit dans la continuité des discussions sur les inégalités scolaires et les politiques publiques. Elle propose une approche par modélisation multi-agents pour comprendre les dynamiques émergentes de la ségrégation scolaire.</p>
+</div></aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Introduction
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Introduction
+
+- Lors du dernier cours : identification d'inégalités et de pistes d'intervention
+- Les inégalités scolaires relèvent de processus systémiques complexes
+- Besoin d'outils pour comprendre et anticiper l'émergence des phénomènes
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### L'approche par modélisation
+
+- La réalité est complexe, multifactorielle et dynamique
+- La modélisation permet 
+	- d'isoler certains mécanismes
+	- de tester des hypothèses sans risque
+	- d'explorer des effets à long terme
+	- d'anticiper les conséquences non intentionnelles des politiques
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### L'inégalité ciblée
+
+- Les réseaux sociaux comme forme de capital inégalement réparti
+- Élèves favorisés : réseaux étendus et socialement diversifiés
+- Élèves défavorisés : réseaux plus restreints et plus homogènes
+- Conséquences sur les opportunités futures et la reproduction sociale
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Le mécanisme exploré
+
+- La ségrégation scolaire comme source d'homogénéité des réseaux sociaux
+- Hypothèse : la composition sociale des écoles influence directement la formation des réseaux d'élèves
+- La ségrégation comme phénomène émergent de choix individuels
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Politiques à tester
+
+- Modification des préférences individuelles (seuils de tolérance)
+- Changement des critères de sélection des écoles
+- Politiques de mixité sociale en cas de surdemande
+- Système de quotas
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### La démarche
+
+- Construction d'un modèle multi-agents avec NetLogo
+- Intégration de connaissances scientifiques sur la ségrégation
+- Expérimentation de différentes configurations 
+- Analyse critique des politiques simulées
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Objectif pédagogique
+
+- Comprendre l'apport de la modélisation pour l'analyse des politiques éducatives
+- Développer un regard critique sur les interventions envisagées
+- Saisir les dynamiques émergentes et les effets systémiques
+- Relier modélisation et données empiriques
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## I. Capital social et réseaux
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Capital social
+
+- **Définition du capital social** (Bourdieu, 1980)
+  - "Ensemble des ressources actuelles ou potentielles liées à un réseau durable de relations"
+  - Ressource inégalement distribuée entre groupes sociaux
+
+- **Distinction entre** (Putnam, 2000)
+  - "Bonding" : liens entre personnes similaires
+  - "Bridging" : liens entre groupes différents
+
+<aside class="notes"><p>Bourdieu, P. (1980). Le capital social : notes provisoires. Actes de la recherche en sciences sociales, 31, 2-3.
+Putnam, R. D. (2000). Bowling Alone: The Collapse and Revival of American Community. Simon &amp; Schuster.</p>
+</div></aside></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Réseaux sociaux et inégalités scolaires (1)
+
+- **"La force des liens faibles"** (Granovetter, 1973)
+  - Importance des connexions diversifiées pour l'accès aux opportunités
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Réseaux sociaux et inégalités scolaires (2)
+
+- **Composition des réseaux selon origine sociale** (Lareau, 2011)
+  - Classes favorisées : réseaux étendus, diversifiés, institutionnalisés
+  - Classes défavorisées : réseaux plus denses, locaux, familiaux
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Réseaux sociaux et inégalités scolaires (3)
+
+- **Impact sur les trajectoires scolaires**
+  - Accès à l'information sur les parcours et les établissements
+  - Soutien scolaire formel et informel
+  - Orientation et projets post-secondaires
+
+<aside class="notes"><p>Granovetter, M. S. (1973). The Strength of Weak Ties. American Journal of Sociology, 78(6), 1360-1380.
+Lareau, A. (2011). Unequal Childhoods: Class, Race, and Family Life. University of California Press.</p>
+</div></aside></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Ségrégation scolaire : bref rappel
+
+- **Phénomène émergent** de préférences individuelles (Schelling, 1971)
+  - Des préférences modérées peuvent produire une forte ségrégation
+
+- **Rôle des quasi-marchés scolaires** (Maroy, 2006)
+  - Libre choix + sélection → accentuation de la ségrégation
+
+
+<aside class="notes"><p>Schelling, T. C. (1971). Dynamic models of segregation. Journal of Mathematical Sociology, 1(2), 143-186.
+Maroy, C. (2006). École, régulation et marché. PUF.
+Friant, N. (2012). Vers une école plus juste : Entre description, compréhension et gestion du système. Thèse de doctorat, Université de Mons.</p>
+</div></aside></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Modélisation des réseaux en milieu scolaire
+
+- **Principe d'homophilie** (McPherson et al., 2001)
+  - Tendance à créer des liens avec des personnes similaires
+  - "Qui se ressemble s'assemble"
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Modélisation des réseaux en milieu scolaire (2)
+
+- **Structure scolaire et formation des réseaux** (Moody, 2001)
+  - La composition des écoles influence directement les relations
+  - Importance des opportunités de contact entre groupes
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Modélisation des réseaux en milieu scolaire (3)
+- **Modèles dynamiques** (Snijders et al., 2010)
+  - Études longitudinales montrant l'évolution des réseaux d'amitié
+  - Rôle des structures (classes, activités) dans la formation des liens
+
+<aside class="notes"><p>McPherson, M., Smith-Lovin, L., &amp; Cook, J. M. (2001). Birds of a Feather: Homophily in Social Networks. Annual Review of Sociology, 27, 415-444.
+Moody, J. (2001). Race, School Integration, and Friendship Segregation in America. American Journal of Sociology, 107(3), 679-716.</p>
+</div></aside></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Politiques de mixité sociale : quelle efficacité ? (1)
+
+- **Expériences de déségrégation forcée** (Orfield & Eaton, 1996)
+  - Effets positifs à long terme sur les trajectoires des élèves défavorisés
+  - Résistances importantes (white flight, évitement)
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Politiques de mixité sociale : quelle efficacité ? (2)
+
+- **Approches par incitations financières**
+  - Hypothèse séduisante mais non validée empiriquement
+  - Surestimation de la rationalité économique des acteurs
+  - Non prise en compte des dynamiques culturelles et symboliques
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Politiques de mixité sociale : quelle efficacité ? (2)
+- **Nécessité de modèles plus complexes**
+  - Besoin d'intégrer les préférences, contraintes et dynamiques systémiques
+  - Importance de l'approche evidence-based
+
+<aside class="notes"><p>Orfield, G., &amp; Eaton, S. E. (1996). Dismantling Desegregation: The Quiet Reversal of Brown v. Board of Education. The New Press.</p>
+</div></aside></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Apports de la modélisation multi-agents (1)
+
+- **Visualiser et tester des hypothèses**
+  - Observer l'émergence de phénomènes complexes
+  - Isoler des mécanismes spécifiques
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Apports de la modélisation multi-agents (2)
+- **Explorer des configurations alternatives**
+  - Varier les paramètres de préférence et de tolérance
+  - Tester différentes politiques d'affectation et de mixité
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Apports de la modélisation multi-agents (3)
+- **Anticiper les effets non intentionnels**
+  - Identifier les possibles stratégies d'évitement
+  - Comprendre les dynamiques de rétroaction
+
+<aside class="notes"><p>L&#39;approche par modélisation multi-agents permet d&#39;explorer les conséquences de différentes politiques éducatives de façon systématique</p>
+</div></aside></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Écueils à éviter dans la modélisation (1)
+
+- **Simplification excessive** des comportements humains
+  - Risque de réductionnisme et de déterminisme
+
+- **Sur-rationalisation** des choix et des préférences
+  - Les acteurs réels ne maximisent pas toujours leur utilité
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Écueils à éviter dans la modélisation (2)
+
+- **Manque d'ancrage empirique**
+  - Nécessité de valider les paramètres du modèle
+  - Confrontation aux données observées
+
+- **Illusion du contrôle**
+  - Les politiques réelles se heurtent à des résistances non modélisées
+  - Importance du contexte historique, culturel et institutionnel
+
+<aside class="notes"><p>Ces mises en garde sont essentielles pour une utilisation critique et prudente des modèles. Il s&#39;agit de voir la modélisation comme un outil d&#39;exploration et de réflexion, pas comme une prédiction certaine.</p>
+</div></aside></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## II. Présentation du modèle NetLogo
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Vue générale du modèle
+
+<img src="Pasted image 20250407124459.png" alt="" style="width: 800px; object-fit: fill">
+
+
+<aside class="notes"><ul>
+<li>Système avec 4 écoles et 3 classes sociales d&#39;élèves</li>
+<li>Dynamique temporelle avec cycles annuels</li>
+<li>Pilotable par différents paramètres</li>
+<li>Politiques éducatives activables/désactivables</div></li>
+</ul>
+</aside></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Les entités du modèle
+
+
+**Écoles**
+- 4 écoles réparties dans l'espace
+- Capacité limitée par année (paramétrable)
+- Composition sociale variable
+- Politiques d'admission ajustables
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Les entités du modèle (2)
+
+**Élèves**
+- 3 classes sociales (favorisés, moyens, défavorisés)
+- Préférences sociales paramétrables
+- Progression annuelle (6 ans)
+- Formation de réseaux sociaux
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Propriétés et attributs (1)
+
+
+**Écoles**
+- `capacity-per-year` : places disponibles par année
+- `nb-favorises/moyens/defavorises` : composition sociale
+- Politiques : sélectivité, mixité, quotas
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Propriétés et attributs (2)
+
+**Élèves**
+- `social-class` : favorisé, moyen ou défavorisé
+- `year` : année scolaire (1-6)
+- `tolerance` : seuil de mixité accepté
+- `my-school` : école assignée
+- `waiting` : en attente ou affecté
+- `network-diversity` : diversité du réseau social
+
+
+
+<aside class="notes"><p>Ces propriétés sont les paramètres clés qui permettent au modèle de simuler la dynamique de ségrégation et de formation des réseaux sociaux.</p>
+</div></aside></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Paramètres du modèle
+
+- **Composition démographique**
+  - `proportion-favorises/moyens/defavorises` : structure sociale de la population
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Paramètres du modèle (2)
+- **Paramètres des écoles**
+  - `school-capacity` : capacité d'accueil par année
+  - `total-students-per-year` : flux annuel de nouveaux élèves
+  - `selectivite-ecoles` : degré de sélection (0-1)
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Paramètres du modèle (3)
+- **Préférences sociales**
+  - `tolerance-favorises/moyens/defavorises` : seuils de tolérance à la diversité
+
+- **Politiques éducatives** (switches)
+  - `politique-mixite-sociale` : favoriser les groupes sous-représentés
+  - `politique-quotas` : imposer des quotas stricts
+
+<aside class="notes"><p>Les sliders permettent d&#39;explorer différentes configurations du système éducatif simulé, tandis que les switches activent ou désactivent des politiques spécifiques.</p>
+</div></aside></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Mécanisme de choix d'école
+
+1. **Logique de tolérance**
+   - Proportion minimale d'élèves similaires souhaitée
+1. **Calcul d'inconfort**
+2. **Choix basé sur la minimisation de l'inconfort**
+- Élèves choisissent l'école avec le moins d'inconfort
+- Prise en compte des contraintes de capacité
+
+<aside class="notes"></div></aside></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Mécanisme de sélection scolaire
+
+- **Sans politique spécifique**
+- Mode aléatoire pur (sélectivité = 0)
+- Renforcement du groupe majoritaire (sélectivité = 1)
+- Combinaison pondérée (valeurs intermédiaires)
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Mécanisme de sélection scolaire (2)
+
+- **Avec politique de mixité sociale**
+- Identification du groupe sous-représenté
+- Priorité proportionnelle à la sélectivité
+- Complément aléatoire pour les places restantes
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Mécanisme de sélection scolaire (3)
+- **Avec politique de quotas**
+- Calcul des cibles par groupe basé sur les proportions globales
+- Attribution stricte jusqu'à atteindre les quotas
+- Distribution des places restantes
+
+<aside class="notes"><p>Ces mécanismes reflètent différentes approches des politiques d&#39;admission scolaire, depuis la sélection &quot;naturelle&quot; jusqu&#39;à l&#39;intervention active pour façonner la composition sociale.</p>
+</div></aside></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Formation des réseaux sociaux
+
+1. **Création de liens entre élèves**
+- Liens entre élèves de la même école
+- Échantillonnage aléatoire (maximum 20 liens)
+
+2. **Calcul de diversité du réseau**
+- Indice de Shannon normalisé
+- Valeur entre 0 (homogénéité) et 1 (diversité maximale)
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Formation des réseaux sociaux (2)
+1. **Hypothèse sous-jacente**
+- La composition de l'école détermine directement la composition du réseau
+- Ségrégation scolaire → homogénéité des réseaux sociaux
+
+<aside class="notes"><p>La formation des réseaux est une simplification nécessaire, mais elle capture l&#39;idée essentielle que l&#39;environnement scolaire contraint fortement les opportunités de développer des liens sociaux diversifiés.</p>
+</div></aside></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Indicateurs clés
+
+
+**Indice de ségrégation (Duncan)**
+- Mesure la distribution inégale des groupes
+- Valeur entre 0 (mixité parfaite) et 1 (ségrégation totale)
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Indicateurs clés (2)
+
+**Diversité des réseaux**
+- Moyenne de l'indice de Shannon pour tous les élèves
+- Reflète la diversité sociale des liens
+- Permet de suivre l'impact des politiques sur le capital social
+
+
+
+
+<aside class="notes"><p>Ces deux indicateurs complémentaires permettent d&#39;évaluer à la fois la ségrégation au niveau du système (indice de Duncan) et ses conséquences sur le capital social individuel (diversité des réseaux).</p>
+</div></aside></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Limites et simplifications
+
+- **Formation des réseaux** basée uniquement sur la co-présence
+- Pas de facteurs d'affinité individuelle
+- Pas d'historique des relations
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Limites et simplifications (2)
+- **Choix scolaire** uniquement basé sur la composition sociale
+- Pas de différenciation qualitative entre écoles
+- Pas de contraintes géographiques
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Limites et simplifications (3)
+- **Homogénéité au sein des groupes sociaux**
+- Pas de variation dans les préférences intra-groupe
+- Pas de facteurs culturels ou ethniques
+
+<aside class="notes"><p>Ces simplifications sont nécessaires pour maintenir le modèle gérable et interprétable, mais il est important d&#39;en être conscient lors de l&#39;analyse des résultats.</p>
+</div></aside></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## III. Fonctionnement du modèle
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Au démarrage
+
+1. Création de l'environnement initial
+2. Création de la population initiale d'élèves
+3. Attribution des préférences
+4. Première distribution des élèves
+
+
+Notes:
+5. **Création de l'environnement initial**:
+    
+    - Le système crée 4 écoles, placées aux quatre coins de l'espace (comme sur une carte)
+    - Chaque école a une capacité maximum d'élèves par année scolaire, définie par le paramètre "school-capacity"
+6. **Création de la population initiale d'élèves**:
+    
+    - Un certain nombre de nouveaux élèves est créé (défini par "total-students-per-year")
+    - Ces élèves sont répartis en trois catégories sociales: favorisés (en rouge), moyens (en vert) et défavorisés (en bleu)
+    - La proportion de chaque groupe est déterminée par les curseurs "proportion-favorises", "proportion-moyens" et "proportion-defavorises"
+7. **Attribution des préférences**:
+    
+    - Chaque élève reçoit un "seuil de tolérance" qui représente la proportion minimale d'élèves similaires qu'il souhaite avoir dans son école
+    - Ces seuils varient selon le groupe social et sont définis par les curseurs "tolerance-favorises", "tolerance-moyens" et "tolerance-defavorises"
+8. **Première distribution des élèves**:
+    
+    - Les élèves sont répartis entre les écoles en tenant compte des politiques activées (ou non)
+    - Cette première distribution établit la situation initiale du système
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### À chaque étape de la simulation (quand on clique sur "go")
+1. **Vieillissement et sortie du système**
+2. **Arrivée de nouveaux élèves**
+3. **Processus de choix d'école** (répété jusqu'à ce que tous les élèves soient placés ou qu'un nombre maximum d'itérations soit atteint)
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Processus de choix d'école
+
+1. Les élèves choisissent les écoles
+2. Les écoles sélectionnent les élèves
+3. Placement des élèves restants
+4. Formation des réseaux sociaux
+5. Mise à jour des statistiques
+
+Notes:
+ **Les élèves choisissent leur école préférée**:
+    
+- Chaque élève en attente examine les écoles qui ont encore de la place
+- Il calcule son "inconfort" pour chaque école en fonction de sa composition sociale
+- Il se déplace vers l'école qui lui procure le moins d'inconfort
+- Si un élève a une tolérance de 0, il choisit n'importe quelle école au hasard
+
+b. **Les écoles sélectionnent les élèves**:
+
+- Chaque école regarde quels élèves l'ont choisie
+- Si leur nombre dépasse la capacité restante, l'école applique des critères de sélection
+- Ces critères varient selon les politiques activées (voir ci-dessous)
+- Les élèves sélectionnés sont admis et les autres doivent chercher une autre école
+4. **Placement des élèves restants**:
+    
+    - Si des élèves n'ont toujours pas trouvé d'école après plusieurs tentatives, ils sont placés dans les écoles qui ont encore de la place
+5. **Formation des réseaux sociaux**:
+    
+    - Les élèves d'une même école forment des liens sociaux entre eux
+    - Ces liens représentent leurs relations sociales (amitié, entraide, etc.)
+    - La diversité de ces réseaux est mesurée (indice de Shannon)
+6. **Mise à jour des statistiques**:
+    
+    - L'indice de ségrégation (Duncan) est calculé pour l'ensemble du système
+    - La diversité moyenne des réseaux sociaux est mise à jour
+    - Ces indicateurs permettent de suivre l'évolution du système
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Les politiques et leur fonctionnement
+</div></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Sans politique active
+Quand une école a trop de candidats, elle sélectionne les élèves selon sa "sélectivité":
+
+- À 0: sélection complètement aléatoire (comme un tirage au sort)
+- À 1: sélection qui renforce le groupe social déjà majoritaire dans l'école
+- Entre 0 et 1: combinaison des deux approches (par exemple, à 0.3, 30% des places vont au groupe majoritaire et 70% sont attribuées au hasard)
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Avec la politique de mixité sociale 
+
+- L'école identifie le groupe social qui est le plus sous-représenté par rapport à sa proportion dans la population globale
+- Elle donne la priorité aux élèves de ce groupe
+- L'intensité de cette priorité dépend du niveau de sélectivité:
+    - À 0: légère priorité (environ 20% des places)
+    - À 1: forte priorité (jusqu'à 100% des places)
+- Les places restantes sont attribuées selon les règles habituelles
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Avec la politique de quotas (switch "politique-quotas")
+
+Cette politique impose des quotas stricts pour chaque groupe social:
+
+- L'école calcule combien d'élèves de chaque groupe elle doit admettre pour refléter les proportions globales
+- Elle sélectionne prioritairement les élèves des groupes les plus sous-représentés
+- Elle ajuste ces quotas au fil du temps pour tendre vers la composition cible
+- Si un groupe est très sous-représenté, sa proportion cible est temporairement augmentée pour accélérer le rééquilibrage
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Indicateurs
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Indice de ségrégation (Duncan)
+    
+- Mesure à quel point les groupes sociaux sont inégalement répartis entre les écoles
+- Valeur 0: distribution parfaitement proportionnelle
+- Valeur 1: ségrégation totale (chaque école n'a qu'un seul type d'élèves)
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Diversité des réseaux
+    
+- Indique à quel point les relations sociales des élèves sont diversifiées
+- Valeur proche de 0: réseaux très homogènes (liens seulement avec des élèves similaires)
+- Valeur proche de 1: réseaux très diversifiés (liens équilibrés avec tous les groupes)
+
+Notes:
+Ce modèle permet ainsi d'explorer comment les préférences individuelles, les politiques d'admission et la structure démographique interagissent pour créer (ou réduire) la ségrégation scolaire et son impact sur la diversité des réseaux sociaux des élèves.
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## IV. Exploration interactive des paramètres
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Exploration systématique
+
+- Analyse méthodique de différentes configurations
+- Observation des tendances et des points de bascule
+- Identification des mécanismes causaux
+- Découverte des effets inattendus ou contre-intuitifs
+
+<aside class="notes"><p>Cette section est conçue pour être interactive. Vous allez manipuler le modèle en direct pour montrer les effets de différents paramètres, puis inviter les étudiants à suggérer d&#39;autres configurations à tester.</p>
+</div></aside></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Scénario 1: Impact des préférences individuelles
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Configuration de base
+- Population équilibrée (33% par groupe)
+- Sélectivité des écoles à 0
+- Pas de politique spécifique
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Variables à manipuler
+- Seuils de tolérance des différents groupes
+- Commencer avec un seul groupe
+- Gradient de valeurs (0.1 → 0.5)
+- Poursuivre en ajoutant d'autres groupes
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Vos prédictions?
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Un exemple de systématisation des prédictions et observations
+
+| Niveau de tolérance | Prédiction (indice de ségrégation) | Observation réelle | Écart |
+| ------------------- | ---------------------------------- | ------------------ | ----- |
+| Très faible (0.1)   |                                    |                    |       |
+| Modéré (0.3)        |                                    |                    |       |
+| Élevé (0.5)         |                                    |                    |       |
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Questions d'observation
+- À partir de quel seuil la ségrégation émerge-t-elle?
+- Quel effet de l'ajout de préférences de groupes supplémentaires ?
+- Comment évoluent les réseaux sociaux?
+- Quelles configurations créent des "points de bascule"?
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Scénario 2: Effet de la sélectivité des écoles
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Configuration
+- Seuils de tolérance faibles
+- Population équilibrée (33% par groupe)
+- Pas de politique spécifique
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Variables à manipuler
+- Niveau de sélectivité (0 → 1)
+- Par paliers de 0.2
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Vos prédictions?
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Questions d'observation
+- Comment la sélectivité amplifie-t-elle la ségrégation?
+- Quels groupes sont favorisés/défavorisés?
+- Comment évolue la diversité des réseaux sociaux?
+
+<aside class="notes"><p>Commencez par une sélectivité nulle (attribution aléatoire), puis augmentez progressivement pour observer comment les mécanismes de sélection amplifient les tendances à la ségrégation.</p>
+</div></aside></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Scénario 3: Politiques de mixité sociale
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Configuration
+- Système initialement ségrégué
+	- Laisser tourner sans politique et seuils de tolérance ségrégatifs
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Variables à manipuler
+- Activer la politique de mixité
+- Activer la politique de quotas
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Vos prédictions?
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Questions d'observation
+- Quelle politique est la plus efficace?
+- Y a-t-il des effets à court et long terme différents?
+- Comment réagissent les différents groupes?
+
+<aside class="notes"><p>Laissez d&#39;abord le système atteindre un état de ségrégation, puis activez les politiques et observez les effets. Cela permet de simuler l&#39;introduction de politiques dans un système déjà ségrégué. </p>
+<p><strong>L&#39;effet rebond</strong> - Voir s&#39;il existe...</p>
+<ul>
+<li>Diminution initiale de la ségrégation</li>
+<li>Recrudescence à moyen terme</li>
+<li>Adaptation des stratégies individuelles</li>
+<li>Limites des interventions structurelles face aux préférences</li>
+</ul>
+<p><strong>Résultat clé</strong></p>
+<ul>
+<li>Les politiques peuvent modifier la structure mais pas nécessairement les préférences</li>
+</ul>
+<p>L&#39;effet rebond est particulièrement intéressant à analyser - il montre les limites des politiques qui ne changent pas les préférences sous-jacentes et illustre la capacité d&#39;adaptation des acteurs.</p>
+</div></aside></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Scénario 4: Composition démographique
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Configuration
+- Seuils de tolérance: 0.1
+- Sélectivité: 0.2
+- Politique de mixité activée
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Variables à manipuler
+- Proportions des groupes sociaux
+- Configurations:
+  - Équilibrée (33/33/33)
+  - Classe moyenne (20/50/30)
+  - Pyramidale (10/30/60)
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Vos prédictions?
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+#### Questions d'observation
+- Comment la structure démographique influence-t-elle la ségrégation?
+- Quelle configuration favorise la mixité sociale?
+- Les politiques sont-elles également efficaces?
+- Quel impact sur les réseaux des groupes minoritaires?
+
+<aside class="notes"><p>Cet aspect est important ca si l&#39;efficacité des politiques dépend fortement de la structure démographique sous-jacente, il faut la prendre en compte dans les politiques éducatives, ce qui n&#39;est pas souvent le cas.</p>
+</div></aside></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### D'autres scénarios à proposer?
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## V. Construction collective d'un nouveau modèle mental
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Intégration des connaissances et analyse systémique
+
+<aside class="notes"><p>Dans cette phase,  on va tenter de passer de fragments de connaissances à un modèle mental intégré de la ségrégation scolaire et de ses mécanismes.</p>
+</div></aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Activité en groupes (15 min)
+
+**Objectif**: Élaborer un schéma causal des mécanismes de ségrégation scolaire
+
+**Instructions**:
+1. Formez des groupes de 3-4 personnes
+2. Créez un schéma qui explique:
+   - Les causes de la ségrégation
+   - Les mécanismes de son maintien ou renforcement
+   - Les points d'intervention possibles
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Grille d'analyse
+
+
+
+| Niveau | Facteurs de ségrégation | Mécanismes | Points d'intervention |
+|--------|-------------------------|------------|------------------------|
+| Individuel |                     |            |                        |
+| École |                          |            |                        |
+| Système |                        |            |                        |
+
+<aside class="notes"><p>Cette  aide à structurer les réflexions par niveau d&#39;analyse.</p>
+</div></aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Boucles de rétroaction
+
+Identifiez s'il existe des boucles de rétroaction. Deux types possibles:
+
+1. **Boucle de renforcement**:
+   - Comment la ségrégation peut s'auto-amplifier?
+   
+2. **Boucle d'équilibrage**:
+   - Quels mécanismes pourraient naturellement limiter la ségrégation?
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Analyse des politiques
+
+| Politique | Efficacité attendue | Conditions de succès | Limites et effets pervers |
+|-----------|---------------------|----------------------|---------------------------|
+| Mixité    |                     |                      |                           |
+| Quotas    |                     |                      |                           |
+| [Autre]   |                     |                      |                           |
+
+<aside class="notes"><p>Cette analyse des politiques permet d&#39;approfondir la réflexion sur les interventions possibles, en tenant compte des complexités du système.</p>
+</div></aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Mise en commun (10 min)
+
+1. Un représentant par groupe présente brièvement leur schéma (1-2 min)
+2. Discussion collective:
+   - Points communs entre les modèles
+   - Divergences significatives
+   - Idées les plus importantes
+
+1. Possibilité de construire un schéma collectif ?
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Comparaison avec les conceptions initiales
+
+En quoi votre compréhension actuelle diffère-t-elle de vos idées initiales?
+
+- Éléments confirmés?
+- Éléments infirmés?
+- Nouvelles découvertes?
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Synthèse: Principes clés
+
+1. **Émergence**: Des phénomènes complexes émergent d'interactions simples
+2. **Non-linéarité**: Les effets ne sont pas proportionnels aux causes
+3. **Rétroaction**: Le système s'auto-influence dans le temps
+4. **Résilience**: Les systèmes résistent naturellement au changement
+5. **Points de levier**: Certaines interventions ont plus d'impact que d'autres
+
+<aside class="notes"><p>Ces principes systémiques transcendent le cas particulier de la ségrégation scolaire et peuvent être transférés à d&#39;autres systèmes.</p>
+</div></aside></script></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/menu/menu.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+		  RevealMenu,
+		  RevealChalkboard, 
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+				{ icon: '<i class="fa fa-pen-square"></i>',
+				title: 'Toggle chalkboard (B)',
+				action: 'RevealChalkboard.toggleChalkboard();'
+				},
+				{ icon: '<i class="fa fa-pen"></i>',
+				title: 'Toggle notes canvas (C)',
+				action: 'RevealChalkboard.toggleNotesCanvas();'
+				},
+			]
+		},
+		menu: {
+			loadIcons: false
+		}
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":true,"showNotes":false,"transition":"slide","transitionSpeed":"fast"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>
